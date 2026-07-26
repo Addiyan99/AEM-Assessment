@@ -25,27 +25,38 @@ export class DashboardComponent implements OnInit {
 
   public donutData: ChartConfiguration<'doughnut'>['data'] = {
     labels: [],
-    datasets: [{ data: [], backgroundColor: ['#4f46e5', '#0f766e', '#0284c7', '#f97316'], hoverOffset: 12 }]
+    datasets: [{
+      data: [],
+      backgroundColor: ['#6b7280', '#9ca3af', '#d1d5db', '#f3f4f6'],
+      hoverOffset: 0,
+      hoverBackgroundColor: ['#6b7280', '#9ca3af', '#d1d5db', '#f3f4f6'],
+      borderWidth: 0
+    }]
   };
 
   public donutOptions: ChartOptions<'doughnut'> = {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { position: 'bottom' }
+      legend: { display: false }
     }
   };
 
   public barData: ChartConfiguration<'bar'>['data'] = {
     labels: [],
-    datasets: [{ data: [], backgroundColor: '#2563eb' }]
+    datasets: [{
+      data: [],
+      backgroundColor: '#6b7280',
+      hoverBackgroundColor: '#6b7280',
+      borderWidth: 0
+    }]
   };
 
   public barOptions: ChartOptions<'bar'> = {
     responsive: true,
     scales: {
-      x: { grid: { display: false } },
-      y: { beginAtZero: true }
+      x: { grid: { display: false }, ticks: { display: false } },
+      y: { display: true, beginAtZero: true, grid: { display: false }, ticks: { display: false } }
     },
     plugins: {
       legend: { display: false }
