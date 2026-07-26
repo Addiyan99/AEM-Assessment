@@ -6,8 +6,9 @@ import { Chart, registerables } from 'chart.js';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { SignInComponent } from './components/sign-in/sign-in.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SignInComponent } from './pages/sign-in/sign-in.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 import { AuthInterceptor } from './utils/interceptors/auth.interceptor';
 import { NgChartsModule } from 'ng2-charts';
 
@@ -17,7 +18,8 @@ Chart.register(...registerables);
   declarations: [
     AppComponent,
     SignInComponent,
-    DashboardComponent
+    DashboardComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

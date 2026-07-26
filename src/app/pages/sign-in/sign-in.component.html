@@ -1,0 +1,25 @@
+<div class="d-flex align-items-center justify-content-center min-vh-100 bg-light p-5">
+    <div class="card-body card rounded border-1 gap-5 p-0 flex-grow-0">
+      <h5 class="card-header rounded-top text-center m-0 p-3 border-0">Sign in to your dashboard</h5>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="d-flex flex-column p-3 gap-4">
+        <div class="form-group">
+          <input id="emailInput" type="email" class="form-control p-3" formControlName="email" placeholder="Username" />
+          <small class="text-danger" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('required')">Email is required.</small>
+          <small class="text-danger" *ngIf="form.get('email')?.touched && form.get('email')?.hasError('email')">Please enter a valid email.</small>
+        </div>
+
+        <div class="form-group">
+          <input id="passwordInput" type="password" class="form-control p-3" formControlName="password" placeholder="Password" />
+          <small class="text-danger" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('required')">Password is required.</small>
+          <small class="text-danger" *ngIf="form.get('password')?.touched && form.get('password')?.hasError('minlength')">Minimum 6 characters.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary py-3 px-5" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'SIGNING IN...' : 'SIGN IN' }}
+        </button>
+
+        <p class="text-danger text-center" *ngIf="errorMessage">{{ errorMessage }}</p>
+      </form>
+    </div>
+</div>

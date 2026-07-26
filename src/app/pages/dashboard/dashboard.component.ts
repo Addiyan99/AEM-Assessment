@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { ChartConfiguration, ChartOptions } from 'chart.js';
 import { AuthService } from '../../utils/services/auth.service';
+import { PouchDbService } from '../../utils/services/pouchdb.service';
 import { SIGN_IN_ROUTE } from '../../utils/constants/route-constant';
 
 const DASHBOARD_URL = 'http://test-demo.aemenersol.com/api/dashboard';
@@ -29,6 +30,7 @@ export class DashboardComponent implements OnInit {
 
   public donutOptions: ChartOptions<'doughnut'> = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { position: 'bottom' }
     }
@@ -53,6 +55,7 @@ export class DashboardComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private authService: AuthService,
+    private pouchDbService: PouchDbService,
     private router: Router
   ) {}
 
@@ -61,9 +64,15 @@ export class DashboardComponent implements OnInit {
       next: (data) => {
         this.dashboardData = data;
         this.updateCharts(data);
+        this.pouchDbService.saveDashboardData(data as any);
         this.loading = false;
       },
-      error: () => {
+      error: async () => {
+        const cachedData = await this.pouchDbService.getDashboardData();
+        if (cachedData) {
+          this.dashboardData = cachedData as DashboardData;
+          this.updateCharts(this.dashboardData);
+        }
         this.loading = false;
       }
     });
@@ -91,10 +100,5 @@ export class DashboardComponent implements OnInit {
         }
       ]
     };
-  }
-
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate([SIGN_IN_ROUTE]);
   }
 }

@@ -25,7 +25,7 @@ export class SignInComponent {
     });
   }
 
-  submit(): void {
+  async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
@@ -34,14 +34,22 @@ export class SignInComponent {
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    this.authService.login(this.form.value.email, this.form.value.password).subscribe({
-      next: () => {
+    const username = this.form.value.email;
+    const password = this.form.value.password;
+
+    try {
+      await this.authService.login(username, password).toPromise();
+      this.router.navigate([DASHBOARD_ROUTE]);
+    } catch (error) {
+      const offlineLoginSuccess = await this.authService.offlineLogin(username, password);
+      
+      if (offlineLoginSuccess) {
         this.router.navigate([DASHBOARD_ROUTE]);
-      },
-      error: () => {
-        this.errorMessage = 'Authentication failed. Please check your credentials.';
-        this.isSubmitting = false;
+        return;
       }
-    });
+
+      this.errorMessage = 'Authentication failed. Please check your credentials.';
+      this.isSubmitting = false;
+    }
   }
 }

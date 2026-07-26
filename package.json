@@ -2,11 +2,17 @@
   "name": "aem-angular-test",
   "version": "0.0.0",
   "private": true,
+  "description": "AEM Enersol Angular Electron dashboard app",
+  "author": "AEM Enersol",
+  "main": "main.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng serve --open"
+    "build": "ng build --base-href ./",
+    "watch": "ng serve --open",
+    "electron": "ng build --configuration production && electron .",
+    "electron:serve": "concurrently -k \"npm start\" \"wait-on http://localhost:4200 && electron .\"",
+    "electron:build": "ng build --configuration production --base-href ./ && electron-packager . AEMEnersolDashboard --platform=win32 --arch=x64 --out=dist-electron --overwrite && node scripts/prepare-electron-build.js"
   },
   "dependencies": {
     "@angular/animations": "^14.2.0",
@@ -17,18 +23,25 @@
     "@angular/platform-browser": "^14.2.0",
     "@angular/platform-browser-dynamic": "^14.2.0",
     "@angular/router": "^14.2.0",
-    "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
-    "zone.js": "~0.11.0",
+    "bootstrap": "^5.2.3",
     "chart.js": "^3.9.1",
     "ng2-charts": "^3.0.0",
-    "bootstrap": "^4.6.0"
+    "pouchdb-browser": "^9.0.0",
+    "rxjs": "~7.5.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.11.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^14.2.0",
     "@angular/cli": "^14.2.0",
     "@angular/compiler-cli": "^14.2.0",
     "@types/node": "^16.18.19",
-    "typescript": "~4.7.0"
+    "@types/pouchdb-browser": "^6.1.5",
+    "concurrently": "^8.0.6",
+    "electron": "^31.0.0",
+    "electron-builder": "^24.0.0",
+    "electron-packager": "^17.1.2",
+    "typescript": "~4.7.0",
+    "wait-on": "^7.0.0"
   }
 }
